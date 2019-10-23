@@ -1,0 +1,78 @@
+#**********服务配置 start**********
+server:
+  port: 9532
+  servlet:
+    application-display-name: destiny
+#**********服务配置 end**********
+
+#**********springMVC start**********
+spring:
+  application:
+    name: destiny-legends
+  mvc:
+    servlet:
+      path: /api/
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  http:
+    encoding:
+      charset: UTF-8
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+    time-zone: GMT+8
+  redis:
+    host: 127.0.0.1
+    database: 0
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+  #**********springMVC end**********
+
+
+  #**********数据源配置 start**********
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/destiny
+    username: root
+    password: root
+    hikari:
+      pool-name: HikariPool - Destiny_Xue
+      minimum-idle: 10
+      max-lifetime: 1800000
+  #      connection-test-query: SELECT 1
+  #      maximum-pool-size: 93
+  #**********数据源配置 end**********
+
+
+#**********logging配置 start**********
+logging:
+  config: classpath:logging-config.xml
+
+#**********logging配置 end**********
+
+
+#**********mybatis-plus start**********
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
+#**********mybatis-plus end**********
+
+
+#**********eureka start**********
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl: {"defaultZone": "http://localhost:9527/eureka/"}
+#**********eureka start**********
