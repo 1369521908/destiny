@@ -161,6 +161,7 @@ public class HeroController extends BaseController {
                 heroDetail = heroPatch.getHero();
                 heroDetail.setId(heroDetail.getHeroId());
                 heroDetail.setRole(Arrays.toString(heroDetail.getRoles().toArray()));
+                heroDetail.setAvatar(hero.getAvatar());
                 heroDetailMapper.insert(heroDetail);
 
                 for (HeroSkin skin : heroPatch.getSkins()) {

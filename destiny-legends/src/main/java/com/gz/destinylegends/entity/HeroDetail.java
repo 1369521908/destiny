@@ -254,6 +254,11 @@ public class HeroDetail implements Serializable {
     private String banAudio;
 
     /**
+     * 英雄图标
+     */
+    private String avatar;
+
+    /**
      * 表头
      */
 //    @TableField(exist = false)

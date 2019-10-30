@@ -23,4 +23,10 @@ public class WadController {
     public Object convert(MultipartFile file) {
         return obsidianFeign.convert(file);
     }
+
+    @PostMapping("toObj")
+    public Object toObj(String hash){
+
+        return null;
+    }
 }

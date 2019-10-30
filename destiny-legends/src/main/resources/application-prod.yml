@@ -19,6 +19,7 @@ spring:
   http:
     encoding:
       charset: UTF-8
+      enabled: true
   jackson:
     serialization:
       write-dates-as-timestamps: true
