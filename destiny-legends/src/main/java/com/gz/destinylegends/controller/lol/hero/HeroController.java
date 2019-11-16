@@ -102,6 +102,7 @@ public class HeroController extends BaseController {
      */
     @Cacheable(value = "list")
     @GetMapping
+    @RequiresPermissions(ShiroPermission.HERO_VIEW)
     public Object list(Hero hero,
                        @RequestParam(required = false, defaultValue = "0") Long currentPage,
                        @RequestParam(required = false, defaultValue = "10") Long pageSize) {
@@ -121,8 +122,8 @@ public class HeroController extends BaseController {
      * 英雄明细(简介): https://lol.qq.com/biz/hero/Annie.js
      * 更详细的信息(详细属性): https://game.gtimg.cn/images/lol/act/img/js/hero/1.js
      *
-     * @param url       url https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js
-     * @param urlDetail 详细url https://game.gtimg.cn/images/lol/act/img/js/hero/
+     * @param url       url:https://game.gtimg.cn/images/lol/act/img/js/heroList/hero_list.js
+     * @param urlDetail urlDetail:https://game.gtimg.cn/images/lol/act/img/js/hero/
      * @return 结果
      */
     @GetMapping("worn")
@@ -140,7 +141,7 @@ public class HeroController extends BaseController {
         heroDetailMapper.delete(wrapper);
         heroSkinMapper.delete(wrapper);
         heroSpellMapper.delete(wrapper);
-        heroPatchMapper.delete(wrapper);
+        // heroPatchMapper.delete(wrapper);
 
         for (Object o : jsonObject.getJSONArray(heroKey)) {
             ThreadUtil.execute(() -> {

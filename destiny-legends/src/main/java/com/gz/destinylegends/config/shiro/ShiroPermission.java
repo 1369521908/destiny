@@ -11,19 +11,19 @@ public class ShiroPermission {
     /**
      * 保存权限
      */
-    private final static String SAVE = "save";
+    private final static String SAVE = SIGN + "save";
     /**
      * 删除权限
      */
-    private final static String DELETE = "delete";
+    private final static String DELETE = SIGN + "delete";
     /**
      * 浏览权限
      */
-    private final static String VIEW = "view";
+    private final static String VIEW = SIGN + "view";
     /**
      * 爬取数据权限
      */
-    private final static String WORN = "worn";
+    private final static String WORN = SIGN + "worn";
 
     //**********通用定义 end**********
 
