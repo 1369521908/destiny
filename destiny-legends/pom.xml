@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.0.RELEASE</version>
+        <version>2.2.1.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.gz</groupId>
@@ -24,7 +24,7 @@
         <p6spy.version>3.8.5</p6spy.version>
         <jwt.version>3.8.3</jwt.version>
         <shiro.version>1.4.1</shiro.version>
-        <spring-cloud.version>Hoxton.M3</spring-cloud.version>
+        <spring-cloud.version>Hoxton.RC2</spring-cloud.version>
     </properties>
 
     <dependencies>
