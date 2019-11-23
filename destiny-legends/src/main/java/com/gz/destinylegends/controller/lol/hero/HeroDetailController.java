@@ -1,5 +1,6 @@
 package com.gz.destinylegends.controller.lol.hero;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author Destiny_Xue
@@ -70,19 +73,45 @@ public class HeroDetailController {
     /**
      * 分页查询
      */
-    @Cacheable(value = "list")
+    @Cacheable(value = "currentPage,pageSize")
     @GetMapping
     public Object list(HeroDetail heroDetail,
-                       @RequestParam(required = false, defaultValue = "0") int pageNumber,
+                       @RequestParam(required = false, defaultValue = "0") int currentPage,
                        @RequestParam(required = false, defaultValue = "10") int pageSize) {
         //分页构造器
-        Page<HeroDetail> page = new Page<HeroDetail>(pageNumber, pageSize);
+        Page<HeroDetail> page = new Page<HeroDetail>(currentPage, pageSize);
         //条件构造器
         QueryWrapper<HeroDetail> queryWrapper = new QueryWrapper<HeroDetail>(heroDetail);
         //执行分页
         IPage<HeroDetail> pageList = heroDetailMapper.selectPage(page, queryWrapper);
         //返回结果
         return ApiUtil.success(pageList);
+    }
+
+    @Cacheable(value = "heroDetail")
+    @PostMapping("/all")
+    public Object all(@RequestBody HeroDetail heroDetail) {
+        //条件构造器
+        QueryWrapper<HeroDetail> queryWrapper = new QueryWrapper<HeroDetail>();
+        if (StrUtil.isNotBlank(heroDetail.getName())) {
+            QueryWrapper<HeroDetail> name = queryWrapper.like("name", heroDetail.getName());
+            if (StrUtil.isNotBlank(heroDetail.getTitle())) {
+                QueryWrapper<HeroDetail> title = name.or().like("title", heroDetail.getTitle());
+                if (StrUtil.isNotBlank(heroDetail.getAlias())) {
+                    title.or().like("alias", heroDetail.getAlias());
+                }
+            }
+        }
+
+        if (heroDetail.getRoles() != null) {
+            for (String role : heroDetail.getRoles()) {
+                queryWrapper.like("roles", role);
+            }
+        }
+
+        List<HeroDetail> list = heroDetailMapper.selectList(queryWrapper);
+        //返回结果
+        return ApiUtil.success(list);
     }
 
 }
