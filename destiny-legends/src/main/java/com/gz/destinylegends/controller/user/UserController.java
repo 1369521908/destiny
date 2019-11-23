@@ -78,6 +78,10 @@ public class UserController extends BaseController {
      */
     @PostMapping("logout")
     public Object logout() {
+        // 获取当前登录人
+        Subject subject = SecurityUtils.getSubject();
+        // 执行登出操作
+        subject.logout();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(Constant.DATA, Constant.SUCCESS);
         jsonObject.put(Constant.CODE, Constant.CODE_SUCCESS);
