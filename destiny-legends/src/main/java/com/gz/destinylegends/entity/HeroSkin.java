@@ -32,6 +32,11 @@ public class HeroSkin implements Serializable {
     /**
      *
      */
+    private Long skinId = 0L;
+
+    /**
+     *
+     */
     private String heroName;
 
     /**
