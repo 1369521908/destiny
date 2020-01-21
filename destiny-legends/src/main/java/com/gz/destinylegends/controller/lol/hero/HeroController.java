@@ -174,7 +174,9 @@ public class HeroController extends BaseController {
                 }
             });
         }
-        log.info("数据保存完毕,耗时:{}ms", System.currentTimeMillis() - start);
+        Long cost = System.currentTimeMillis() - start;
+        log.info("数据保存完毕,耗时:{}ms", cost);
+        jsonObject.put("耗时", cost);
         return ApiUtil.success(jsonObject);
     }
 

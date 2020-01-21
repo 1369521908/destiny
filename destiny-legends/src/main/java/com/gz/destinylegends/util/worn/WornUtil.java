@@ -14,6 +14,7 @@ public class WornUtil {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("xxxxx", System.currentTimeMillis() * Math.random());
         jsonObject.put("yyyyy", System.currentTimeMillis() * Math.random());
+        jsonObject.put("zzzzz", System.currentTimeMillis() * Math.random());
         return HttpUtil.get(url, jsonObject);
     }
 }

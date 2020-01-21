@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-@FeignClient(value = "service-obsidian", path = "obsidian", configuration = FeignConfiguration.class)
+@FeignClient(value = Constant.SERVICE_OBSIDIAN, path = Constant.PATH_OBSIDIAN,
+        configuration = FeignConfiguration.class)
 public interface ObsidianFeign {
 
-    @PostMapping(value = "convert", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = Constant.OBSIDIAN_CONVERT, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     String convert(@RequestPart(value = "file") MultipartFile file);
 }
