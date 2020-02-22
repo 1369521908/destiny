@@ -1,6 +1,6 @@
 #**********服务配置 start**********
 server:
-  port: 9531
+  port: 9530
   servlet:
     application-display-name: destiny
 #**********服务配置 end**********
@@ -35,7 +35,11 @@ spring:
         max-wait: -1ms
         min-idle: 0
   #**********springMVC end**********
-
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      exclude: /webapp   #页面所载目录
 
   #**********数据源配置 start**********
   datasource:

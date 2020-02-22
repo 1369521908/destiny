@@ -1,20 +1,24 @@
 package com.gz.destinylegends.controller.lol.hero;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gz.destinylegends.config.shiro.ShiroPermission;
 import com.gz.destinylegends.controller.base.BaseController;
+import com.gz.destinylegends.dto.HeroPatch;
 import com.gz.destinylegends.entity.Hero;
 import com.gz.destinylegends.entity.HeroDetail;
 import com.gz.destinylegends.entity.HeroSkin;
 import com.gz.destinylegends.entity.HeroSpell;
 import com.gz.destinylegends.mapper.*;
-import com.gz.destinylegends.dto.HeroPatch;
 import com.gz.destinylegends.util.api.ApiUtil;
 import com.gz.destinylegends.util.worn.WornUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +29,11 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author Destiny_Xue
@@ -102,7 +109,7 @@ public class HeroController extends BaseController {
      */
     @Cacheable(value = "list")
     @GetMapping
-    @RequiresPermissions(ShiroPermission.HERO_VIEW)
+    // @RequiresPermissions(ShiroPermission.HERO_VIEW)
     public Object list(Hero hero,
                        @RequestParam(required = false, defaultValue = "0") Long currentPage,
                        @RequestParam(required = false, defaultValue = "10") Long pageSize) {
@@ -186,6 +193,55 @@ public class HeroController extends BaseController {
         } catch (Exception e) {
             return getDetail(urlDetail, hero);
         }
+    }
+
+    /**
+     * 价格
+     *
+     * @param heroId id
+     * @return 价格信息
+     */
+    @GetMapping("/price")
+    public Object price(Long heroId) {
+        String url = "https://apps.game.qq.com/daoju/v3/api/hx/goods/app/v71/GoodsListApp.php?view=biz_cate&page=1&pageSize=16&orderby=dtShowBegin&ordertype=desc&cate=16&appSource=pc&plat=1&output_format=jsonp&biz=lol&_=1582206597483";
+        // 参数提取
+        String path = "D:\\lol\\需求整理\\价格缓存\\";
+        List<JSONObject> heroList = new ArrayList<>();
+        for (int i = 0; i < 11; i++) {
+            JSONObject params = new JSONObject();
+            params.put("view", "biz_cate");
+            params.put("page", i + 1);
+            params.put("pageSize", 20);
+            params.put("orderby", "dtShowBegin");
+            params.put("ordertype", "desc");
+            // 16
+            params.put("cate", 16);
+            // pc
+            params.put("appSource", "android");
+            params.put("plat", 1);
+            params.put("output_format", "jsonp");
+            params.put("biz", "lol");
+            params.put("_", System.currentTimeMillis() / 1000);
+            String s = HttpUtil.get("https://apps.game.qq.com/daoju/v3/api/hx/goods/app/v71/GoodsListApp.php", params);
+            s = s.substring(s.indexOf("=") + 1);
+            File file = FileUtil.touch(path + i + ".txt");
+            FileWriter fileWriter = FileWriter.create(file);
+            fileWriter.write(s);
+            JSONArray goods = JSONObject.parseObject(s).getJSONObject("data").getJSONArray("goods");
+            if (null != goods) {
+                for (Object good : goods) {
+                    List<JSONObject> valiDate = JSONObject.parseObject(JSONObject.toJSONString(good)).getJSONArray("valiDate").toJavaList(JSONObject.class);
+                    JSONObject hero = valiDate.get(0);
+                    heroList.add(hero);
+                }
+            }
+        }
+        File flush = FileUtil.touch(path + "清洗.txt");
+        FileWriter fileWriter = FileWriter.create(flush);
+        fileWriter.write(JSONObject.toJSONString(heroList));
+
+        String s = "";
+        return ApiUtil.success(JSONObject.parseObject(s));
     }
 
 }
