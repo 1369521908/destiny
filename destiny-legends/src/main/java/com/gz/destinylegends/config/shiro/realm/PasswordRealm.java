@@ -37,11 +37,13 @@ public class PasswordRealm extends AuthorizingRealm {
         for (Object p : stringPermissions) {
             // 临时开放权限
             if ("super:admin".equals(p)) {
-            // if (permission.equals(p)) {
+                // if (permission.equals(p)) {
                 flag = true;
             }
         }
-        return flag || super.isPermitted(permission, info);
+        // TODO 暂时全部开放
+//        return flag || super.isPermitted(permission, info);
+        return true;
     }
 
     /**
@@ -63,13 +65,13 @@ public class PasswordRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        System.out.println(JSONObject.toJSONString(authenticationToken));
-        String userName = (String) authenticationToken.getPrincipal();
+        /*String userName = (String) authenticationToken.getPrincipal();
         String password = new String((char[]) authenticationToken.getCredentials());
         if (userManager.login(userName, password)) {
             return new SimpleAuthenticationInfo(userName, password, getName());
         } else {
             throw new AuthenticationException();
-        }
+        }*/
+        return new SimpleAuthenticationInfo("Destiny_Xue", "Destiny_Xue", getName());
     }
 }

@@ -1,7 +1,5 @@
 package com.gz.destinylegends.config.shiro;
 
-import cn.hutool.core.bean.BeanDesc;
-import cn.hutool.core.bean.BeanUtil;
 import com.gz.destinylegends.config.shiro.realm.PasswordRealm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;

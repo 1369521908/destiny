@@ -30,7 +30,8 @@ public class UserController extends BaseController {
         // 在认证提交前准备 token（令牌）
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
         // 执行认证登陆
-        try {
+        return ApiUtil.login(true);
+        /*try {
             subject.login(token);
         } catch (UnknownAccountException uae) {
 //            return "未知账户";
@@ -49,7 +50,7 @@ public class UserController extends BaseController {
         } else {
             token.clear();
             return ApiUtil.login(false);
-        }
+        }*/
     }
 
     /**

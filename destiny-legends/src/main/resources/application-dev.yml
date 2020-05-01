@@ -66,9 +66,23 @@ logging:
 #**********mybatis-plus start**********
 mybatis-plus:
   configuration:
+    #    驼峰转换
     map-underscore-to-camel-case: false
+    #    枚举处理器
     default-enum-type-handler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
 #**********mybatis-plus end**********
+
+#**********Grafana start**********
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+#**********Grafana end**********
 
 
 #**********eureka start**********
@@ -81,3 +95,26 @@ eureka:
     fetch-registry: true
     serviceUrl: {"defaultZone": "http://localhost:9527/eureka/"}
 #**********eureka end**********
+
+#**********beetl start**********
+beetl:
+  templatesPath: "classpath:templates"
+#**********beetl end**********
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

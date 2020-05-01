@@ -1,6 +1,6 @@
 #**********服务配置 start**********
 server:
-  port: 9531
+  port: 9530
   servlet:
     application-display-name: destiny
 #**********服务配置 end**********
@@ -68,6 +68,19 @@ mybatis-plus:
 #**********mybatis-plus end**********
 
 
+#**********Grafana start**********
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+#**********Grafana end**********
+
+
 #**********eureka start**********
 eureka:
   instance:
@@ -78,3 +91,12 @@ eureka:
     fetch-registry: true
     serviceUrl: {"defaultZone": "http://localhost:9527/eureka/"}
 #**********eureka start**********
+
+#**********beetl start**********
+beetl:
+  templatesPath: "classpath:templates"
+#**********beetl end**********
+
+
+
+

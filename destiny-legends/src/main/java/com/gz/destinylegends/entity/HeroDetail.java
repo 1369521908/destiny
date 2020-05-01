@@ -54,37 +54,37 @@ public class HeroDetail implements Serializable {
     private String role;
 
     /**
-     * shortbio
+     * shortbio 简短描述
      */
     private String shortBio;
 
     /**
-     * camp
+     * camp 阵营
      */
     private String camp;
 
     /**
-     * attack
+     * attack 攻击倾向值
      */
     private Integer attack;
 
     /**
-     * defense
+     * defense 防御倾向值
      */
     private Integer defense;
 
     /**
-     * magic
+     * magic 法术倾向值
      */
     private Integer magic;
 
     /**
-     * difficulty
+     * difficulty 操作难度倾向值
      */
     private Integer difficulty;
 
     /**
-     * hp
+     * hp 起始生命值
      */
     private Double hp;
 

@@ -1,38 +1,54 @@
+/*
 package com.gz.destinylegends.config.beetl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.beetl.core.Configuration;
-import org.beetl.core.GroupTemplate;
-import org.beetl.core.resource.CompositeResourceLoader;
+import org.beetl.core.resource.ClasspathResourceLoader;
+import org.beetl.ext.spring.BeetlGroupUtilConfiguration;
+import org.beetl.ext.spring.BeetlSpringViewResolver;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
-@Configurable
 @Slf4j
-@Component
+@Configurable
 public class BeetlConfig {
+    // log.debug("beetl groupTemplate 加载 :{}", groupTemplate);
 
-    /**
-     * 全局 GroupTemplate 单例 ,使用时建议使用注入方式取得对象
-     *
-     * @return
-     */
-    @Bean(name = "groupTemplate")
-    public GroupTemplate groupTemplate() {
-        try {
-            CompositeResourceLoader loader = new CompositeResourceLoader();
+    @Value("${beetl.templatesPath}")
+    String templatesPath;//模板根目录 ，比如 "templates"
 
-            Configuration configuration = Configuration.defaultConfiguration();
+    @Bean(name = "beetlConfig")
+    public BeetlGroupUtilConfiguration getBeetlGroupUtilConfiguration() {
 
-            GroupTemplate groupTemplate = new GroupTemplate(loader, configuration);
-            log.debug("配置beetl groupTemplate :{}", groupTemplate);
-            return groupTemplate;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+        BeetlGroupUtilConfiguration beetlGroupUtilConfiguration = new BeetlGroupUtilConfiguration();
+        //获取Spring Boot 的ClassLoader
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        if (loader == null) {
+            loader = BeetlConfig.class.getClassLoader();
         }
+        // beetlGroupUtilConfiguration.setConfigProperties(extProperties);//额外的配置，可以覆盖默认配置，一般不需要
+        */
+/*ClasspathResourceLoader cploder = new ClasspathResourceLoader(loader,
+                templatesPath);*//*
+
+        ClasspathResourceLoader cploder = new ClasspathResourceLoader(loader);
+        beetlGroupUtilConfiguration.setResourceLoader(cploder);
+        beetlGroupUtilConfiguration.init();
+        //如果使用了优化编译器，涉及到字节码操作，需要添加ClassLoader
+        beetlGroupUtilConfiguration.getGroupTemplate().setClassLoader(loader);
+        return beetlGroupUtilConfiguration;
+
     }
+
+    @Bean(name = "beetlViewResolver")
+    public BeetlSpringViewResolver getBeetlSpringViewResolver(@Qualifier("beetlConfig") BeetlGroupUtilConfiguration beetlGroupUtilConfiguration) {
+        BeetlSpringViewResolver beetlSpringViewResolver = new BeetlSpringViewResolver();
+        beetlSpringViewResolver.setContentType("text/html;charset=UTF-8");
+        beetlSpringViewResolver.setOrder(0);
+        beetlSpringViewResolver.setConfig(beetlGroupUtilConfiguration);
+        return beetlSpringViewResolver;
+    }
+
 }
+*/
